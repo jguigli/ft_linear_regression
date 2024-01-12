@@ -42,8 +42,8 @@ def linear_regression(mileage: np.ndarray, price: np.ndarray):
         # print(f"price : {price}")
         diff_price = predicted_price - price
         # print(f"diff price : {diff_price}")
-        d_theta0 = (1 / m) * np.sum(diff_price)
-        d_theta1 = (1 / m) * np.sum((diff_price) * mileage)
+        d_theta0 = (1/ m) * np.sum(diff_price)
+        d_theta1 = (1/ m) * np.sum(diff_price * mileage)
 
         # print(f"tmptheta0 : {d_theta0}")
         # print(f"tmptheta1 : {d_theta1}")
@@ -53,6 +53,20 @@ def linear_regression(mileage: np.ndarray, price: np.ndarray):
         # print(f"theta0 : {theta0}")
         # print(f"theta1 : {theta1}")
 
+
+    # MSE pour Mean Square Error (erreur quadratique moyenne)
+    mse = np.sum((predicted_price - price)**2)
+    # RMSE pour Root Mean Square Error (racine carrée de l'erreur quadratique moyenne)
+    # m est le nombre d'échantillons d'apprentissage
+    rmse = np.sqrt(mse/m)
+
+    # ssr = sum of square of residuals (somme des carrés des résidus)
+    ssr = np.sum((predicted_price - price)**2)
+    #  sst = total sum of squares (somme totale des carrés)
+    sst = np.sum((price - np.mean(price))**2)
+    # Score R2
+    r2_score = 1 - (ssr/sst)
+
     return theta0, theta1
 
 
@@ -61,10 +75,10 @@ def training_model():
     try:
         data = load("data.csv")
 
-        data_mileage = data['km'].astype('int')
-        data_price = data['price'].astype('int')
-        # data_price = 2 * np.random.rand(24, 1)
-        # data_mileage = 4 - 3 * data_price + np.random.randn(24, 1)
+        # data_mileage = data['km'].astype('int')
+        # data_price = data['price'].astype('int')
+        data_price = 2 * np.random.rand(24, 1)
+        data_mileage = 4 - 3 * data_price + np.random.randn(24, 1)
 
         # data_mileage = np.array([[2400], [1398], [1505], [1855], [1760], [1148], [1668], [890], [1445], [840],
         #               [820], [630], [740], [975], [670], [760], [482], [930], [609], [656],
@@ -81,13 +95,13 @@ def training_model():
         price = np.array(data_price)
 
 
-        mileage_normalized, price_normalized = normalize_data(mileage, price)
+        # mileage_normalized, price_normalized = normalize_data(mileage, price)
 
-        mileage_normalized = mileage_normalized.reshape((mileage_normalized.shape[0], 1))
-        price_normalized = price_normalized.reshape((price_normalized.shape[0], 1))
+        # mileage_normalized = mileage_normalized.reshape((mileage_normalized.shape[0], 1))
+        # price_normalized = price_normalized.reshape((price_normalized.shape[0], 1))
 
-        mileage = mileage_normalized
-        price = price_normalized
+        # mileage = mileage_normalized
+        # price = price_normalized
 
 
         print(mileage)
@@ -99,7 +113,7 @@ def training_model():
 
         theta0, theta1 = linear_regression(mileage, price)
         print(f"Y = {theta1}X + {theta0}")
-        theta0, theta1 = reajust_coefficient(theta0, theta1, mileage, price)
+        # theta0, theta1 = reajust_coefficient(theta0, theta1, mileage, price)
         predicted_price = estimate_price(theta0, theta1, mileage)
 
         # print(f"theta0 : {theta0}")
