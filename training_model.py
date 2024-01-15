@@ -21,6 +21,12 @@ def normalize_data(mileage, price):
     price = (price - price_mean) / price_std
     return mileage, price
 
+def min_max_scaling(data):
+    min_vals = np.min(data, axis=0)
+    max_vals = np.max(data, axis=0)
+    scaled_data = (data - min_vals) / (max_vals - min_vals)
+    return scaled_data
+
 def reajust_coefficient(theta0, theta1, mileage, price):
     theta0 = np.mean(price) - theta1 * np.mean(mileage) * np.std(price) / np.std(mileage)
     theta1 = theta1 * np.std(price) / np.std(mileage)
@@ -34,7 +40,7 @@ def linear_regression(mileage: np.ndarray, price: np.ndarray):
     
     m = len(mileage)
     theta0, theta1 = 0, 0
-    learning_rate = 0.01
+    learning_rate = 0.1
 
     for i in range(1000):
         predicted_price = estimate_price(theta0, theta1, mileage)
@@ -75,10 +81,10 @@ def training_model():
     try:
         data = load("data.csv")
 
-        # data_mileage = data['km'].astype('int')
-        # data_price = data['price'].astype('int')
-        data_price = 2 * np.random.rand(24, 1)
-        data_mileage = 4 - 3 * data_price + np.random.randn(24, 1)
+        data_mileage = data['km'].astype('int')
+        data_price = data['price'].astype('int')
+        # data_price = 2 * np.random.rand(24, 1)
+        # data_mileage = 4 - 3 * data_price + np.random.randn(24, 1)
 
         # data_mileage = np.array([[2400], [1398], [1505], [1855], [1760], [1148], [1668], [890], [1445], [840],
         #               [820], [630], [740], [975], [670], [760], [482], [930], [609], [656],
@@ -96,6 +102,8 @@ def training_model():
 
 
         # mileage_normalized, price_normalized = normalize_data(mileage, price)
+        mileage = min_max_scaling(mileage)
+        price = min_max_scaling(price)
 
         # mileage_normalized = mileage_normalized.reshape((mileage_normalized.shape[0], 1))
         # price_normalized = price_normalized.reshape((price_normalized.shape[0], 1))
@@ -103,10 +111,8 @@ def training_model():
         # mileage = mileage_normalized
         # price = price_normalized
 
-
         print(mileage)
         print(price)
-
 
         # print(mileage_normalized)
         # print(price_normalized)
@@ -123,7 +129,7 @@ def training_model():
         # print(f"Predicted : {predicted_price}")
 
 
-        plt.scatter(data_mileage, data_price)
+        plt.scatter(mileage, price)
         if theta1 < 0:
             plt.plot([min(mileage), max(mileage)], [max(predicted_price), min(predicted_price)], color='red')
         else:
