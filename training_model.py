@@ -13,32 +13,23 @@ def load(path: str) -> pd.DataFrame:
         print(f"Error handling: {str(e)}")
         return
 
-def normalize_data(mileage, price):
-    mileage_mean, mileage_std = np.mean(mileage), np.std(mileage)
-    price_mean, price_std = np.mean(price), np.std(price)
-
-    mileage = (mileage - mileage_mean) / mileage_std
-    price = (price - price_mean) / price_std
-    return mileage, price
-
 def min_max_scaling(data):
-    min_vals = np.min(data, axis=0)
-    max_vals = np.max(data, axis=0)
+    min_vals = np.min(data)
+    max_vals = np.max(data)
     scaled_data = (data - min_vals) / (max_vals - min_vals)
     return scaled_data
 
-def reajust_coefficient(theta0, theta1, mileage, price):
-    theta0 = np.mean(price) - theta1 * np.mean(mileage) * np.std(price) / np.std(mileage)
-    theta1 = theta1 * np.std(price) / np.std(mileage)
+def adjust_coefficients(theta0_normalized, theta1_normalized, price, mileage):
+    theta0 = theta0_normalized * np.max(price)
+    theta1 = theta1_normalized * (np.max(price) / np.max(mileage))
     return theta0, theta1
 
 def estimate_price(theta0, theta1, mileage):
     return theta0 + theta1 * mileage
 
-
-def linear_regression(mileage: np.ndarray, price: np.ndarray):
+def gradient_descent(mileage: np.ndarray, price: np.ndarray):
     
-    m = len(mileage)
+    m = float(len(mileage))
     theta0, theta1 = 0, 0
     learning_rate = 0.1
 
@@ -48,8 +39,8 @@ def linear_regression(mileage: np.ndarray, price: np.ndarray):
         # print(f"price : {price}")
         diff_price = predicted_price - price
         # print(f"diff price : {diff_price}")
-        d_theta0 = (1/ m) * np.sum(diff_price)
-        d_theta1 = (1/ m) * np.sum(diff_price * mileage)
+        d_theta0 = (1 / m) * np.sum(diff_price)
+        d_theta1 = (1 / m) * np.sum(diff_price * mileage)
 
         # print(f"tmptheta0 : {d_theta0}")
         # print(f"tmptheta1 : {d_theta1}")
@@ -86,12 +77,6 @@ def training_model():
         # data_price = 2 * np.random.rand(24, 1)
         # data_mileage = 4 - 3 * data_price + np.random.randn(24, 1)
 
-        # data_mileage = np.array([[2400], [1398], [1505], [1855], [1760], [1148], [1668], [890], [1445], [840],
-        #               [820], [630], [740], [975], [670], [760], [482], [930], [609], [656],
-        #               [540], [685], [228], [617]])
-        # data_price = np.array([[36], [38], [44], [44], [52], [53], [58], [59], [59], [62],
-        #               [63], [63], [66], [68], [68], [69], [69], [69], [74], [75],
-        #               [79], [79], [79], [82]])
 
         print(data_mileage)
         print(data_price)
@@ -101,9 +86,8 @@ def training_model():
         price = np.array(data_price)
 
 
-        # mileage_normalized, price_normalized = normalize_data(mileage, price)
-        mileage = min_max_scaling(mileage)
-        price = min_max_scaling(price)
+        mileage_normalized = min_max_scaling(mileage)
+        price_normalized = min_max_scaling(price)
 
         # mileage_normalized = mileage_normalized.reshape((mileage_normalized.shape[0], 1))
         # price_normalized = price_normalized.reshape((price_normalized.shape[0], 1))
@@ -111,16 +95,15 @@ def training_model():
         # mileage = mileage_normalized
         # price = price_normalized
 
-        print(mileage)
-        print(price)
+        # print(mileage)
+        # print(price)
 
         # print(mileage_normalized)
         # print(price_normalized)
 
-        theta0, theta1 = linear_regression(mileage, price)
+        theta0, theta1 = gradient_descent(mileage_normalized, price_normalized)
         print(f"Y = {theta1}X + {theta0}")
-        # theta0, theta1 = reajust_coefficient(theta0, theta1, mileage, price)
-        predicted_price = estimate_price(theta0, theta1, mileage)
+        theta0, theta1 = adjust_coefficients(theta0, theta1, price, mileage)
 
         # print(f"theta0 : {theta0}")
         # print(f"theta1 : {theta1}")
@@ -128,6 +111,7 @@ def training_model():
         print(f"Y = {theta1}X + {theta0}")
         # print(f"Predicted : {predicted_price}")
 
+        predicted_price = estimate_price(theta0, theta1, mileage)
 
         plt.scatter(mileage, price)
         if theta1 < 0:
