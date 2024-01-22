@@ -9,3 +9,28 @@
 [Youtube Modele lineaire](https://www.youtube.com/watch?v=8Y3r7F47Xfo)  
 
 [Normalization](https://www.codecademy.com/article/normalization)  
+
+
+# Command
+
+In the directory /srcs :
+
+	make
+
+(Execute all commands in order)
+
+	make train
+
+Execute the training linear regression program based on csv data.
+
+	make predict
+
+Predict the price of a car according to the train model.
+
+	make accuracy
+
+Show the accuracy of the linear regression algorithm.
+
+	make graph
+
+Plot the data and the line resulting from the linear regression program
