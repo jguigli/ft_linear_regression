@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def algorithm_accuracy():
-    """DOC HERE"""
     try:
         data = load("../data/data.csv")
         data_mileage = data['km'].astype('int')
@@ -19,21 +18,17 @@ def algorithm_accuracy():
         predicted_price = estimate_price(theta0, theta1, mileage)
 
         print("Precision of the algorithm :")
-        # MSE pour Mean Square Error (erreur quadratique moyenne)
-        mse = np.sum((predicted_price - price) ** 2)
-        print(f"- Mean Square Error : {mse:.2f}")
 
-        # RMSE pour Root Mean Square Error (racine carrée de l'erreur quadratique moyenne)
-        rmse = np.sqrt(mse / m)
-        print(f"- Root Mean Square Error : {rmse:.2f}")
+        mean_square_error = (1 / m) * np.sum((predicted_price - price) ** 2)
+        root_mean_square_error = np.sqrt(mean_square_error / m)
+        sum_square_residuals = np.sum((predicted_price - price) ** 2)
+        total_sum_squares = np.sum((price - np.mean(price)) ** 2)
+        r2_score = 1 - (sum_square_residuals / total_sum_squares)
 
-        # Sum of square of residuals (somme des carrés des résidus)
-        ssr = np.sum((predicted_price - price) ** 2)
-        # Total sum of squares (somme totale des carrés)
-        sst = np.sum((price - np.mean(price)) ** 2)
-        # Score R2
-        r2_score = 1 - (ssr / sst)
+        print(f"- Mean Square Error : {mean_square_error:.2f}")
+        print(f"- Root Mean Square Error : {root_mean_square_error:.2f}")
         print(f"- R2 Score : {round(100 * r2_score)}%\n")
+        
     except Exception as e:
         print(f"Error handling: {str(e)}")
         return

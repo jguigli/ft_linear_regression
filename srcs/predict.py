@@ -1,7 +1,6 @@
 from training_model import training_model, estimate_price, load
 
 def predict_price():
-    """DOC HERE"""
     try:
         thetas = load("../data/thetas.csv")
         theta0 = float(thetas['theta0'].iloc[0])
@@ -12,7 +11,7 @@ def predict_price():
         theta0 = 0
         theta1 = 0
         
-    mileage = input("Enter a mileage to predict the price of the car: ")
+    mileage = input("Enter a mileage to predict the price of a car: ")
     try:
         mileage = int(mileage)
         price = estimate_price(theta0, theta1, mileage)

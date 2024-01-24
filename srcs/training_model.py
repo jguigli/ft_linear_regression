@@ -9,40 +9,33 @@ def load(path: str) -> pd.DataFrame:
     return df
 
 def export_thetas(theta0, theta1):
-    print(f"- theta0 : {theta0}")
-    print(f"- theta1 : {theta1}")
     df = pd.DataFrame({"theta0": [theta0],"theta1": [theta1]})
     df.to_csv("../data/thetas.csv", index=False)
-    print(f"Exporting to file : theta0 and theta1 has been saved to thetas.csv\n")
+    print(f"Exporting file : theta0 and theta1 has been saved to /data/thetas.csv\n")
 
 def min_max_scaling(data):
-    """DOC HERE"""
-    # scaled_data = (data - np.min(data)) / (np.max(data) - np.min(data))
     scaled_data = (data / np.max(data))
     return scaled_data
 
 def adjust_coefficients(theta0_normalized, theta1_normalized, price, mileage):
-    """DOC HERE"""
     min_vals = np.min(price)
     max_vals = np.max(price)
     theta0 = theta0_normalized * np.max(price)
     theta1 = theta1_normalized * (np.max(price) / np.max(mileage))
-    
-    # theta0 = theta0_normalized - theta1_normalized * min_vals
-    # theta1 = theta1_normalized / (max_vals - min_vals)
     return theta0, theta1
 
 def estimate_price(theta0, theta1, mileage):
-    """DOC HERE"""
     return theta0 + theta1 * mileage
 
 def gradient_descent(mileage: np.ndarray, price: np.ndarray):
-    """DOC HERE"""
     m = float(len(mileage))
     theta0, theta1 = 0, 0
     learning_rate = 0.1
+    costs = []
+    i = 0
 
     while 1:
+        i += 1
         old_theta0 = theta0
         old_theta1 = theta1
 
@@ -55,15 +48,25 @@ def gradient_descent(mileage: np.ndarray, price: np.ndarray):
         theta0 -= learning_rate * d_theta0
         theta1 -= learning_rate * d_theta1
 
+        mean_square_error = (1 / m) * np.sum((predicted_price - price) ** 2)
+        costs.append(mean_square_error)
+
         if (theta0 == old_theta0 and theta1 == old_theta1):
-            print("The linear regression has finished.")
+            print(f"The linear regression has finished.\nNumber of iterations : {i}\n")
             break
+    
+    plt.plot(costs, marker='o', linestyle='-')
+    plt.xscale("log")
+    plt.xticks(ticks=[1, 10, 100, 1000, 5000, 10000], labels=['0', '10', '100', '1k', '5k', '10k'])
+    plt.xlabel('Iterations')
+    plt.ylabel('Cost function')
+    plt.title('Convergence of gradient descent')
+    plt.show()
 
     return theta0, theta1
 
 
 def training_model():
-    """DOC HERE"""
     try:
         data = load("../data/data.csv")
 
@@ -75,11 +78,10 @@ def training_model():
         price_normalized = min_max_scaling(price)
 
         theta0, theta1 = gradient_descent(mileage_normalized, price_normalized)
-        # print(f"Y = {theta1}X + {theta0}\n")
-
         theta0, theta1 = adjust_coefficients(theta0, theta1, price, mileage)
+        print(f"- theta0 : {theta0}")
+        print(f"- theta1 : {theta1}")
         export_thetas(theta0, theta1)
-        # print(f"Y = {theta1}X + {theta0}")
     except Exception as e:
         print(f"Error handling: {str(e)}")
         return

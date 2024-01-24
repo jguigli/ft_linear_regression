@@ -2,8 +2,7 @@ from training_model import load, estimate_price
 import matplotlib.pyplot as plt
 import numpy as np
 
-def graph_data():
-    """DOC HERE"""
+def graph_data():    
     try:
         data = load("../data/data.csv")
         data_mileage = data['km'].astype('int')
