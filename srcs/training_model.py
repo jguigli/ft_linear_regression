@@ -35,7 +35,6 @@ def gradient_descent(mileage: np.ndarray, price: np.ndarray):
     i = 0
 
     while 1:
-        i += 1
         old_theta0 = theta0
         old_theta1 = theta1
 
@@ -48,20 +47,10 @@ def gradient_descent(mileage: np.ndarray, price: np.ndarray):
         theta0 -= learning_rate * d_theta0
         theta1 -= learning_rate * d_theta1
 
-        mean_square_error = (1 / m) * np.sum((predicted_price - price) ** 2)
-        costs.append(mean_square_error)
-
         if (theta0 == old_theta0 and theta1 == old_theta1):
             print(f"The linear regression has finished.\nNumber of iterations : {i}\n")
             break
-    
-    plt.plot(costs, marker='o', linestyle='-')
-    plt.xscale("log")
-    plt.xticks(ticks=[1, 10, 100, 1000, 5000, 10000], labels=['0', '10', '100', '1k', '5k', '10k'])
-    plt.xlabel('Iterations')
-    plt.ylabel('Cost function')
-    plt.title('Convergence of gradient descent')
-    plt.show()
+        i += 1
 
     return theta0, theta1
 
