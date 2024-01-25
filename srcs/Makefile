@@ -1,12 +1,12 @@
 all: train predict accuracy graph
 
 train:
-	python3 ./training_model.py
+	@python3 ./training_model.py
 predict:
-	python3 ./predict.py
+	@python3 ./predict.py
 graph:
-	python3 ./graph.py
+	@python3 ./graph.py
 accuracy:
-	python3 ./algorithm_accuracy.py
+	@python3 ./algorithm_accuracy.py
 clean:
-	rm ../data/thetas.csv
+	@rm ../data/thetas.csv
