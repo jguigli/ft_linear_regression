@@ -34,3 +34,32 @@ Show the accuracy of the linear regression algorithm.
 	make graph
 
 Plot the data and the line resulting from the linear regression program
+
+ERROR GNOME LINUX 42 :
+
+(process:487468): GLib-GIO-CRITICAL **: 16:46:56.835: g_dbus_connection_emit_signal: assertion 'object_path != NULL && g_variant_is_object_path (object_path)' failed
+
+(process:487468): GLib-GIO-CRITICAL **: 16:46:56.835: g_dbus_connection_emit_signal: assertion 'object_path != NULL && g_variant_is_object_path (object_path)' failed
+
+(python3:487468): GLib-GIO-CRITICAL **: 16:46:56.870: g_dbus_connection_emit_signal: assertion 'object_path != NULL && g_variant_is_object_path (object_path)' failed
+
+(python3:487468): GLib-GIO-CRITICAL **: 16:46:56.870: g_dbus_connection_emit_signal: assertion 'object_path != NULL && g_variant_is_object_path (object_path)' failed
+
+(python3:487468): GLib-GIO-CRITICAL **: 16:46:56.871: g_dbus_connection_emit_signal: assertion 'object_path != NULL && g_variant_is_object_path (object_path)' failed
+
+(python3:487468): GLib-GIO-CRITICAL **: 16:46:56.871: g_dbus_connection_emit_signal: assertion 'object_path != NULL && g_variant_is_object_path (object_path)' failed
+
+(python3:487468): GLib-GIO-CRITICAL **: 16:46:56.897: g_dbus_connection_register_object: assertion 'object_path != NULL && g_variant_is_object_path (object_path)' failed
+
+(python3:487468): GLib-GIO-CRITICAL **: 16:46:56.897: g_dbus_connection_register_object: assertion 'object_path != NULL && g_variant_is_object_path (object_path)' failed
+
+(python3:487468): GLib-GIO-CRITICAL **: 16:46:56.897: g_dbus_connection_register_object: assertion 'object_path != NULL && g_variant_is_object_path (object_path)' failed
+
+(python3:487468): GLib-GIO-CRITICAL **: 16:46:56.897: g_dbus_connection_register_object: assertion 'object_path != NULL && g_variant_is_object_path (object_path)' failed
+
+(python3:487468): GLib-GIO-CRITICAL **: 16:46:56.897: g_dbus_connection_register_object: assertion 'object_path != NULL && g_variant_is_object_path (object_path)' failed
+
+(python3:487468): GLib-GIO-CRITICAL **: 16:46:56.897: g_dbus_connection_register_object: assertion 'object_path != NULL && g_variant_is_object_path (object_path)' failed
+
+(python3:487468): GLib-GIO-CRITICAL **: 16:46:59.020: g_dbus_connection_emit_signal: assertion 'object_path != NULL && g_variant_is_object_path (object_path)' failed
+make: *** [Makefile:8: graph] Segmentation fault (core dumped)
