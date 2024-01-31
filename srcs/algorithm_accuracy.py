@@ -28,7 +28,6 @@ def algorithm_accuracy():
         print(f"- Mean Square Error : {mean_square_error:.2f}")
         print(f"- Root Mean Square Error : {root_mean_square_error:.2f}")
         print(f"- R2 Score : {round(100 * r2_score)}%\n")
-        
     except Exception as e:
         print(f"Error handling: {str(e)}")
         return

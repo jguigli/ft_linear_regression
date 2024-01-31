@@ -8,7 +8,7 @@ def predict_price():
         
     except Exception as e:
         print(f"Error handling: {str(e)}")
-        print(f"Missing thetas.csv file, value set to 0.")
+        print(f"Thetas value set to 0.")
         theta0 = 0
         theta1 = 0
         

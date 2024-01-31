@@ -1,6 +1,8 @@
 from training_model import load, estimate_price
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+matplotlib.use('TkAgg')
 
 def graph_data():    
     try:
